@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController"
+    name=":FtcRobotController"
+    type="LIBRARY"
+    maven="FTC18108_PowerPlay-master:FtcRobotController:"
+    gradle="7.2.2"
+    buildFolder="build"
+    bootClassPath="/Users/sandhya/Library/Android/sdk/platforms/android-29/android.jar"
+    javaSourceLevel="1.7"
+    compileTarget="android-29"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="debug"/>
+</lint-module>

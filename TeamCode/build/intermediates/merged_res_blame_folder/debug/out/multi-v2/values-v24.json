@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-31:/values-v24/values-v24.xml",
+            "map": [
+                {
+                    "source": "/Users/sandhya/.gradle/caches/transforms-3/3967bb3b222e781a3ce9a576c35793dc/transformed/appcompat-1.5.1/res/values-v24/values-v24.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,212",
+                        "endColumns": "156,134",
+                        "endOffsets": "207,342"
+                    }
+                }
+            ]
+        }
+    ]
+}

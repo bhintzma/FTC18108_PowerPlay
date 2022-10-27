@@ -1,0 +1,220 @@
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptGamepadTouchpad.java:59: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+                telemetry.addLine(String.format("Finger 1: x=%5.2f y=%5.2f\n", gamepad1.touchpad_finger_1_x, gamepad1.touchpad_finger_1_y));
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptGamepadTouchpad.java:66: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+                telemetry.addLine(String.format("Finger 2: x=%5.2f y=%5.2f\n", gamepad1.touchpad_finger_2_x, gamepad1.touchpad_finger_2_y));
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorKLNavxMicro.java:119: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+        return String.format("%.3f", rate);
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorKLNavxMicro.java:127: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+        return String.format("%.1f", AngleUnit.DEGREES.normalize(degrees));
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRGyro.java:151: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+    return String.format("%d", rawValue);
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRGyro.java:155: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+    return String.format("%.3f", rate);
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRGyro.java:159: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+    return String.format("%.3f", rate);
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorREV2mDistance.java:76: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+            telemetry.addData("range", String.format("%.01f mm", sensorRange.getDistance(DistanceUnit.MM)));
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorREV2mDistance.java:77: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+            telemetry.addData("range", String.format("%.01f cm", sensorRange.getDistance(DistanceUnit.CM)));
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorREV2mDistance.java:78: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+            telemetry.addData("range", String.format("%.01f m", sensorRange.getDistance(DistanceUnit.METER)));
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorREV2mDistance.java:79: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+            telemetry.addData("range", String.format("%.01f in", sensorRange.getDistance(DistanceUnit.INCH)));
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "DefaultLocale":
+   Calling String#toLowerCase() or #toUpperCase() without specifying an
+   explicit locale is a common source of bugs. The reason for that is that
+   those methods will use the current locale on the user's device, and even
+   though the code appears to work correctly when you are developing the app,
+   it will fail in some locales. For example, in the Turkish locale, the
+   uppercase replacement for i is not I.
+
+   If you want the methods to just perform ASCII replacement, for example to
+   convert an enum name, call String#toUpperCase(Locale.US) instead. If you
+   really want to use the current locale, call
+   String#toUpperCase(Locale.getDefault()) instead.
+
+   https://developer.android.com/reference/java/util/Locale.html#default_locale
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsOnBotJava.java:68: Warning: Do not hardcode "/sdcard/"; use Environment.getExternalStorageDirectory().getPath() instead [SdCardPath]
+    private File goldFile   = new File("/sdcard" + soundPath + "/gold.wav");
+                                       ~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsOnBotJava.java:69: Warning: Do not hardcode "/sdcard/"; use Environment.getExternalStorageDirectory().getPath() instead [SdCardPath]
+    private File silverFile = new File("/sdcard" + soundPath + "/silver.wav");
+                                       ~~~~~~~~~
+
+   Explanation for issues of type "SdCardPath":
+   Your code should not reference the /sdcard path directly; instead use
+   Environment.getExternalStorageDirectory().getPath().
+
+   Similarly, do not reference the /data/data/ path directly; it can vary in
+   multi-user scenarios. Instead, use Context.getFilesDir().getPath().
+
+   https://developer.android.com/training/data-storage#filesExternal
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/AndroidManifest.xml:26: Warning: Redundant label can be removed [RedundantLabel]
+              android:label="@string/app_name"
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/AndroidManifest.xml:40: Warning: Redundant label can be removed [RedundantLabel]
+      android:label="@string/app_name"
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "RedundantLabel":
+   When an activity does not have a label attribute, it will use the one from
+   the application tag. Since the application has already specified the same
+   label, the label on this activity can be omitted.
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/AndroidManifest.xml:23: Warning: As of Android 12, android:exported must be set; use true to make the activity available to other apps, and false otherwise. For launcher activities, this should be set to true. [IntentFilterExportedReceiver]
+    <activity android:name="org.firstinspires.ftc.robotcontroller.internal.PermissionValidatorWrapper"
+     ~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/AndroidManifest.xml:36: Warning: As of Android 12, android:exported must be set; use true to make the activity available to other apps, and false otherwise. [IntentFilterExportedReceiver]
+    <activity
+     ~~~~~~~~
+
+   Explanation for issues of type "IntentFilterExportedReceiver":
+   Apps targeting Android 12 and higher are required to specify an explicit
+   value for android:exported when the corresponding component has an intent
+   filter defined. Otherwise, installation will fail. Set it to true to make
+   this activity accessible to other apps, and false to limit it to be used
+   only by this app or the OS. For launch activities, this should be set to
+   true; otherwise, the app will fail to launch.
+
+   Previously, android:exported for components without any intent filters
+   present used to default to false, and when intent filters were present, the
+   default was true. Defaults which change value based on other values are
+   confusing and lead to apps accidentally exporting components as a
+   side-effect of adding intent filters. This is a security risk, and we have
+   made this change to avoid introducing accidental vulnerabilities.
+
+   While the default without intent filters remains unchanged, it is now
+   required to explicitly specify a value when intent filters are present. Any
+   app failing to meet this requirement will fail to install on any Android
+   version after Android 11.
+
+   We recommend setting android:exported to false (even on previous versions
+   of Android prior to this requirement) unless you have a good reason to
+   export a particular component.
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java:599: Warning: Unnecessary; SDK_INT is always >= 23 [ObsoleteSdkInt]
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/raw/gold.wav: Warning: The resource R.raw.gold appears to be unused [UnusedResources]
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/raw/silver.wav: Warning: The resource R.raw.silver appears to be unused [UnusedResources]
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/values/strings.xml:46: Warning: The resource R.string.blocks_menu_item appears to be unused [UnusedResources]
+  <string name="blocks_menu_item">Blocks</string>
+          ~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/values/strings.xml:59: Warning: The resource R.array.app_theme_ids appears to be unused [UnusedResources]
+  <integer-array name="app_theme_ids">
+                 ~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/values/styles.xml:8: Warning: The resource R.style.AppThemeGreenRC appears to be unused [UnusedResources]
+    <style name="AppThemeGreenRC" parent="AppTheme.Green">
+           ~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/values/styles.xml:11: Warning: The resource R.style.AppThemeBlueRC appears to be unused [UnusedResources]
+    <style name="AppThemeBlueRC" parent="AppTheme.Blue">
+           ~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/values/styles.xml:14: Warning: The resource R.style.AppThemePurpleRC appears to be unused [UnusedResources]
+    <style name="AppThemePurpleRC" parent="AppTheme.Purple">
+           ~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/values/styles.xml:17: Warning: The resource R.style.AppThemeOrangeRC appears to be unused [UnusedResources]
+    <style name="AppThemeOrangeRC" parent="AppTheme.Orange">
+           ~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/values/styles.xml:20: Warning: The resource R.style.AppThemeTealRC appears to be unused [UnusedResources]
+    <style name="AppThemeTealRC" parent="AppTheme.Teal">
+           ~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests=true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests=true.
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res: Warning: Missing density variation folders in /Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res: drawable-hdpi, drawable-mdpi, drawable-xxhdpi [IconMissingDensityFolder]
+
+   Explanation for issues of type "IconMissingDensityFolder":
+   Icons will look best if a custom version is provided for each of the major
+   screen density classes (low, medium, high, extra-high, extra-extra-high).
+   This lint check identifies folders which are missing, such as
+   drawable-hdpi.
+
+   Low density is not really used much anymore, so this check ignores the ldpi
+   density. To force lint to include it, set the environment variable
+   ANDROID_LINT_INCLUDE_LDPI=true. For more information on current density
+   usage, see https://developer.android.com/about/dashboards
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java:433: Warning: Custom view `LinearLayout` has setOnTouchListener called on it but does not override performClick [ClickableViewAccessibility]
+    entireScreenLayout.setOnTouchListener(new View.OnTouchListener() {
+    ^
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java:435: Warning: onTouch should call View#performClick when a click is detected [ClickableViewAccessibility]
+      public boolean onTouch(View v, MotionEvent event) {
+                     ~~~~~~~
+
+   Explanation for issues of type "ClickableViewAccessibility":
+   If a View that overrides onTouchEvent or uses an OnTouchListener does not
+   also implement performClick and call it when clicks are detected, the View
+   may not handle accessibility actions properly. Logic handling the click
+   actions should ideally be placed in View#performClick as some accessibility
+   services invoke performClick when a click action should occur.
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/layout/activity_ftc_controller.xml:51: Warning: Missing contentDescription attribute on image [ContentDescription]
+    <ImageView
+     ~~~~~~~~~
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/layout/activity_ftc_controller.xml:69: Warning: Missing contentDescription attribute on image [ContentDescription]
+    <ImageButton
+     ~~~~~~~~~~~
+
+   Explanation for issues of type "ContentDescription":
+   Non-textual widgets like ImageViews and ImageButtons should use the
+   contentDescription attribute to specify a textual description of the widget
+   such that screen readers and other accessibility tools can adequately
+   describe the user interface.
+
+   Note that elements in application screens that are purely decorative and do
+   not provide any content or enable a user action should not have
+   accessibility content descriptions. In this case, just suppress the lint
+   warning with a tools:ignore="ContentDescription" attribute.
+
+   Note that for text fields, you should not set both the hint and the
+   contentDescription attributes since the hint will never be shown. Just set
+   the hint.
+
+   https://developer.android.com/guide/topics/ui/accessibility/apps#special-cases
+
+/Users/sandhya/Downloads/FTC18108_PowerPlay-master/FtcRobotController/src/main/res/layout/activity_ftc_controller.xml:59: Warning: @id/textDeviceName can overlap @id/menu_buttons if @id/textDeviceName grows due to localized text expansion [RelativeOverlap]
+    <TextView
+     ~~~~~~~~
+
+   Explanation for issues of type "RelativeOverlap":
+   If relative layout has text or button items aligned to left and right sides
+   they can overlap each other due to localized text expansion unless they
+   have mutual constraints like toEndOf/toStartOf.
+
+0 errors, 33 warnings

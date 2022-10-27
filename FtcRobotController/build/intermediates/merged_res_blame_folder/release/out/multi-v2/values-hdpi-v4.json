@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.qualcomm.ftcrobotcontroller.FtcRobotController-mergeReleaseResources-27:/values-hdpi-v4/values-hdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/Users/sandhya/.gradle/caches/transforms-3/3967bb3b222e781a3ce9a576c35793dc/transformed/appcompat-1.5.1/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "6",
+                        "endColumns": "13",
+                        "endOffsets": "327"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.qualcomm.ftcrobotcontroller.FtcRobotController-merged_res-29:/values-hdpi-v4/values-hdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/Users/sandhya/.gradle/caches/transforms-3/3967bb3b222e781a3ce9a576c35793dc/transformed/appcompat-1.5.1/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "6",
+                        "endColumns": "13",
+                        "endOffsets": "327"
+                    }
+                }
+            ]
+        }
+    ]
+}

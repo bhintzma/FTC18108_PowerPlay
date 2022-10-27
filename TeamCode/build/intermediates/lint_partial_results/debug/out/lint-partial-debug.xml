@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 7.2.2" type="partial_results">
+    <map id="UnusedResources">
+        <location id="R.raw.readme"
+            file="${:TeamCode*debug*sourceProvider*0*resDir*0}/raw/readme.md"/>
+        <entry
+            name="model"
+            string="raw[readme(D)],xml[teamwebcamcalibrations(D)];;;;"/>
+        <location id="R.xml.teamwebcamcalibrations"
+            file="${:TeamCode*debug*sourceProvider*0*resDir*0}/xml/teamwebcamcalibrations.xml"
+            line="53"
+            column="1"
+            startOffset="3456"
+            endLine="161"
+            endColumn="16"
+            endOffset="7526"/>
+    </map>
+
+</incidents>

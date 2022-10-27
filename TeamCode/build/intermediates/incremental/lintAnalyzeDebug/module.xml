@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="/Users/sandhya/Downloads/FTC18108_PowerPlay-master/TeamCode"
+    name=":TeamCode"
+    type="APP"
+    maven="FTC18108_PowerPlay-master:TeamCode:"
+    gradle="7.2.2"
+    buildFolder="build"
+    bootClassPath="/Users/sandhya/Library/Android/sdk/platforms/android-32/android.jar:/Users/sandhya/Library/Android/sdk/build-tools/30.0.3/core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-32"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="debug"/>
+</lint-module>
