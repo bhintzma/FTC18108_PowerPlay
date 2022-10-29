@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,10 +12,6 @@ import org.apache.commons.math3.analysis.function.Power;
 import org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot;
 import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.INCREMENT;
 import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.CYCLE_MS;
-import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.AMAX_POS;
-import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.AMIN_POS;
-import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.BMAX_POS;
-import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.BMIN_POS;
 
 
 
@@ -26,6 +23,7 @@ import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.BMIN_POS;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "drive")
+@Disabled
 public class LocalizationTest extends LinearOpMode {
 
     @Override

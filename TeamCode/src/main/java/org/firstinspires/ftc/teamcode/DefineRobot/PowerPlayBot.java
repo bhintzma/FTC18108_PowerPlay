@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.DefineRobot;
 
-
-
 import android.util.Log;
 
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
@@ -142,6 +140,14 @@ public class PowerPlayBot extends MecanumDrive {
     public boolean gp1ButtonXLastState = false;
     public boolean gp1ButtonYCurrentState = false;
     public boolean gp1ButtonYLastState = false;
+    public boolean gp2ButtonACurrentState = false;
+    public boolean gp2ButtonALastState = false;
+    public boolean gp2ButtonBCurrentState = false;
+    public boolean gp2ButtonBLastState = false;
+    public boolean gp2ButtonXCurrentState = false;
+    public boolean gp2ButtonXLastState = false;
+    public boolean gp2ButtonYCurrentState = false;
+    public boolean gp2ButtonYLastState = false;
 
     // Variables to detect if DPAD buttons newly pressed or already pressed
     public boolean gp1DpadUpCurrentState = false;
@@ -152,6 +158,14 @@ public class PowerPlayBot extends MecanumDrive {
     public boolean gp1DpadDownLastState = false;
     public boolean gp1DpadLeftCurrentState = false;
     public boolean gp1DpadLeftLastState = false;
+    public boolean gp2DpadUpCurrentState = false;
+    public boolean gp2DpadUpLastState = false;
+    public boolean gp2DpadRightCurrentState = false;
+    public boolean gp2DpadRightLastState = false;
+    public boolean gp2DpadDownCurrentState = false;
+    public boolean gp2DpadDownLastState = false;
+    public boolean gp2DpadLeftCurrentState = false;
+    public boolean gp2DpadLeftLastState = false;
 
     // Variables to detect if bumpers newly pressed or already pressed
     public boolean gp1LeftBumperCurrentState = false;
@@ -165,22 +179,32 @@ public class PowerPlayBot extends MecanumDrive {
 
 
     // Constants define movement of claw; Min and Max Positions
-    public static final double INCREMENT   = 0.03;     // amount to slew servo each CYCLE_MS cycle
+    public static final double INCREMENT   = 0.05;     // amount to slew servo each CYCLE_MS cycle
     public static final int    CYCLE_MS    =   30;     // period of each cycle
 
-    public static final double AMAX_POS     =  1.00;     // Maximum rotational position
-    public static final double AMIN_POS     =  0.50;     // Minimum rotational position
+    public static final double AMAX_POS     =  1.4;     // Maximum rotational position ---- Phil Claw: 1.7; GoBilda Claw: 1.4
+    public static final double AMIN_POS     =  0.61;     // Minimum rotational position ---- Phil Claw: 0.49; GoBilda Claw: 0.61
     public double  Aposition = AMIN_POS;                 // Start position
 
     public static final double BMAX_POS     =  1.00;     // Maximum rotational position
     public static final double BMIN_POS     =  0.50;     // Minimum rotational position
     public double  Bposition = BMIN_POS;                 // Start position
 
+    public static final double CLAW_OPEN_SETTING = AMAX_POS;
+    public static final double CLAW_CLOSED_SETTING = AMIN_POS;
+
     // Constants define junction height at tile intersections in units of linear slide motor encoder counts
     public static final int     JUNCTION_HIGH             = 2400;    // Height of junctions - highest
     public static final int     JUNCTION_MEDIUM           = 1600;    // Height of junctions - medium
     public static final int     JUNCTION_LOW              = 800;     // Height of junctions - shortest
     public static final int     JUNCTION_GROUND           = 100;     // Height of junctions with no pole
+
+    // Linear Slide encoder counts for the Stack of 5 cones
+    public static final int     STACK_CONE_5             = 180;
+    public static final int     STACK_CONE_4             = 160;
+    public static final int     STACK_CONE_3             = 140;
+    public static final int     STACK_CONE_2             = 120;
+    public static final int     STACK_CONE_1             = 100;
 
     // Coordinates of the four robot starting positions
     public static final int     RED_RIGHT_START_COL       = 0;       // Red Right starting X
@@ -290,47 +314,45 @@ public class PowerPlayBot extends MecanumDrive {
         slideRight.setPower(slidePower);
     }
 
+    public void moveSlidesToHeight(int motorSlideEncoderCounts) {
+
+        slideLeft.setTargetPosition(motorSlideEncoderCounts);
+        slideRight.setTargetPosition(-motorSlideEncoderCounts);
+
+        slideLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        slideRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+    }
+
+    public void openClaw() {
+        Claw.setPosition(CLAW_OPEN_SETTING);
+        opMode.sleep(1000);
+    }
+
+    public void closeClaw() {
+        Claw.setPosition(CLAW_CLOSED_SETTING);
+        opMode.sleep(1000);
+    }
+
     public void clawPosition() {
 
-        gp1LeftBumperLastState = gp1LeftBumperCurrentState;
-        gp1LeftBumperCurrentState = opMode.gamepad1.left_bumper;
-        gp1RightBumperLastState = gp1RightBumperCurrentState;
-        gp1RightBumperCurrentState = opMode.gamepad1.right_bumper;
-
-        if (gp1LeftBumperCurrentState && !gp1LeftBumperLastState) {
+        if (opMode.gamepad2.left_bumper) {
             Aposition -= INCREMENT;
             if (Aposition >= AMAX_POS) {
                 Aposition = AMAX_POS;
             }
-
-
-            /* Bposition -= INCREMENT;
-            if (Bposition >= BMAX_POS) {
-                Bposition = BMAX_POS;
-            }
-
-             */
         }
 
-        if (gp1RightBumperCurrentState && !gp1RightBumperLastState) {
+        if (opMode.gamepad2.right_bumper) {
             Aposition += INCREMENT;
             if (Aposition <= AMIN_POS) {
                 Aposition = AMIN_POS;
             }
-            // Keep stepping down until we hit the min value.
-
-            /* Bposition += INCREMENT;
-            if (Bposition <= BMIN_POS) {
-                Bposition = BMIN_POS;
-            }
-
-             */
         }
 
         // Set the servo to the new position and pause;
         Claw.setPosition(Aposition);
-        opMode.sleep(CYCLE_MS);
-        opMode.idle();
+        //opMode.sleep(CYCLE_MS);
+        //opMode.idle();
 
     }
 
@@ -755,7 +777,7 @@ public class PowerPlayBot extends MecanumDrive {
         if (opMode.opModeIsActive()) {
 
             startMotorCounts = frontLeft.getCurrentPosition();
-            stopMotorCounts = startMotorCounts + COUNTS_PER_1_TILE_STRAFE;
+            stopMotorCounts = startMotorCounts + (int)(distance * STRAFE_COUNTS_PER_INCH);
             drive1 = 0.0;
             drive2 = -1.0;
             leftPower = Range.clip(drive1 + drive2, -1.0, 1.0);
@@ -780,7 +802,7 @@ public class PowerPlayBot extends MecanumDrive {
         if (opMode.opModeIsActive()) {
 
             startMotorCounts = frontLeft.getCurrentPosition();
-            stopMotorCounts = startMotorCounts - COUNTS_PER_1_TILE_STRAFE;
+            stopMotorCounts = startMotorCounts - (int)(distance * STRAFE_COUNTS_PER_INCH);
             drive1 = 0.0;
             drive2 = 1.0;
             leftPower = Range.clip(drive1 + drive2, -1.0, 1.0);
@@ -980,29 +1002,25 @@ public class PowerPlayBot extends MecanumDrive {
                     // Change COLUMNS
                     // Checking if moving in positive or negative Column / X direction
                     if (changeCols > 0) {
-                        for (int n = 0; n < changeCols; n++) {
-                            driveStraight(DRIVE_SPEED, 24.0, 0.0);     // Drive Forward 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);     // Hold 0 Deg heading for 0.25 second
-                        }
+                        driveStraight(DRIVE_SPEED,changeCols*12.0,0.0);
+                        currentBotCol += changeCols;
+                        holdHeading(TURN_SPEED, 0.0, 0.25);       // Hold 0 Deg heading for 0.25 second
                     } else if (changeCols < 0) {
-                        for (int X = 0; X < Math.abs(changeCols); X++) {
-                            driveStraight(DRIVE_SPEED, -24.0, 0.0);    // Drive Forward 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);     // Hold 0 Deg heading for 0.25 second
-                        }
+                        driveStraight(DRIVE_SPEED,changeCols*12.0,0.0);
+                        currentBotCol += changeCols;
+                        holdHeading(TURN_SPEED, 0.0, 0.25);       // Hold 0 Deg heading for 0.25 second
                     }
 
                     // Change ROWS
                     // Checking if moving in positive or negative Rows / Y direction
                     if (changeRows > 0) {
-                        for (int n = 0; n < changeRows; n++) {
-                            strafeLeft(DRIVE_SPEED, 24.0);                    // Drive Left 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
-                        }
+                        strafeLeft(DRIVE_SPEED,changeRows*12.0);
+                        currentBotRow += changeRows;
+                        holdHeading(TURN_SPEED, 0.0, 0.5);       // Hold 0 Deg heading for a 0.25 second
                     } else if (changeRows < 0) {
-                        for (int X = 0; X < Math.abs(changeRows); X++) {
-                            strafeRight(DRIVE_SPEED, 24.0);                    // Drive Left 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
-                        }
+                        strafeRight(DRIVE_SPEED,changeRows*12.0);
+                        currentBotRow += changeRows;
+                        holdHeading(TURN_SPEED, 0.0, 0.5);       // Hold 0 Deg heading for a 0.25 second
                     }
 
                 } else {  // Alliance is BLUE, positive & negative directions are swapped compared to RED
@@ -1010,29 +1028,25 @@ public class PowerPlayBot extends MecanumDrive {
                     // Change COLUMNS
                     // Checking if moving in positive or negative Column / X direction
                     if (changeCols > 0) {
-                        for (int n = 0; n < changeCols; n++) {
-                            driveStraight(DRIVE_SPEED, -24.0, 0.0);     // Drive Forward 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);     // Hold 0 Deg heading for 0.25 second
-                        }
+                        driveStraight(DRIVE_SPEED,changeCols*12.0,0.0);
+                        currentBotCol += changeCols;
+                        holdHeading(TURN_SPEED, 0.0, 0.25);       // Hold 0 Deg heading for 0.25 second
                     } else if (changeCols < 0) {
-                        for (int X = 0; X < Math.abs(changeCols); X++) {
-                            driveStraight(DRIVE_SPEED, 24.0, 0.0);    // Drive Forward 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);     // Hold 0 Deg heading for 0.25 second
-                        }
+                        driveStraight(DRIVE_SPEED,changeCols*12.0,0.0);
+                        currentBotCol += changeCols;
+                        holdHeading(TURN_SPEED, 0.0, 0.25);       // Hold 0 Deg heading for 0.25 second
                     }
 
                     // Change ROWS
                     // Checking if moving in positive or negative Rows / Y direction
                     if (changeRows > 0) {
-                        for (int n = 0; n < changeRows; n++) {
-                            strafeRight(DRIVE_SPEED, 24.0);                    // Drive Left 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
-                        }
+                        strafeRight(DRIVE_SPEED,changeRows*12.0);
+                        currentBotRow += changeRows;
+                        holdHeading(TURN_SPEED, 0.0, 0.5);       // Hold 0 Deg heading for a 0.25 second
                     } else if (changeRows < 0) {
-                        for (int X = 0; X < Math.abs(changeRows); X++) {
-                            strafeLeft(DRIVE_SPEED, 24.0);                    // Drive Left 24"
-                            holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
-                        }
+                        strafeLeft(DRIVE_SPEED,changeRows*12.0);
+                        currentBotRow += changeRows;
+                        holdHeading(TURN_SPEED, 0.0, 0.5);       // Hold 0 Deg heading for a 0.25 second
                     }
                 }
             }

@@ -33,6 +33,7 @@ import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.DRIVE_SPEE
 import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.TURN_SPEED;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot;
@@ -42,7 +43,7 @@ import org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot;
  */
 
 @Autonomous(name="Red_Right", group="Robot")
-// @Disabled
+@Disabled
 public class Red_Right extends LinearOpMode {
 
     @Override
@@ -62,9 +63,12 @@ public class Red_Right extends LinearOpMode {
         // Set initial Bot Coordinates on the field
         ppb.currentBotCol = ppb.RED_RIGHT_START_COL;
         ppb.currentBotRow = ppb.RED_RIGHT_START_ROW;
+        ppb.currentHeading = 0.0;
+        ppb.currentAlliance = PowerPlayBot.Alliance.RED;
 
         // Wait for the game to start (driver presses PLAY) Display IMU value while waiting
         while (opModeInInit()) {
+            telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
             telemetry.addData("Robot Heading ", "= %4.0f", ppb.getRawHeading());
             telemetry.addData("Start Position",  "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
             telemetry.update();
@@ -84,10 +88,65 @@ public class Red_Right extends LinearOpMode {
         // Vision Detect for the Sleeve goes here
 
         // Drive to the closest stack of cones for our Alliance color
+        // Drive to all the High Junctions + closest Medium Junction to deposit cones
+        // Get Stack Cone #5
+        ppb.openClaw();
+        ppb.moveSlidesToHeight(ppb.STACK_CONE_5);
         ppb.driveToCoordinate(ppb.RED_FRONT_CONE_STACK_COL, ppb.RED_FRONT_CONE_STACK_ROW);
+        ppb.closeClaw();
+        // Drive to High Junction (5,6)
+        ppb.driveToCoordinate(4, 6);
+        ppb.moveSlidesToHeight(ppb.JUNCTION_HIGH);
+        ppb.driveToCoordinate(5, 6);
+        ppb.openClaw();
+        // Get Stack Cone #4
+        ppb.driveToCoordinate(4, 6);
+        ppb.moveSlidesToHeight(ppb.STACK_CONE_4);
+        ppb.driveToCoordinate(ppb.RED_FRONT_CONE_STACK_COL, ppb.RED_FRONT_CONE_STACK_ROW);
+        ppb.closeClaw();
+        // Drive to High Junction (7,4)
+        ppb.driveToCoordinate(6, 4);
+        ppb.moveSlidesToHeight(ppb.JUNCTION_HIGH);
+        ppb.driveToCoordinate(7, 4);
+        ppb.openClaw();
+        // Get Stack Cone #3
+        ppb.driveToCoordinate(6, 4);
+        ppb.moveSlidesToHeight(ppb.STACK_CONE_3);
+        ppb.driveToCoordinate(ppb.RED_FRONT_CONE_STACK_COL, ppb.RED_FRONT_CONE_STACK_ROW);
+        ppb.closeClaw();
+        // Drive to High Junction (3,4)
+        ppb.driveToCoordinate(4, 4);
+        ppb.moveSlidesToHeight(ppb.JUNCTION_HIGH);
+        ppb.driveToCoordinate(3, 4);
+        ppb.openClaw();
+        // Get Stack Cone #2
+        ppb.driveToCoordinate(4, 4);
+        ppb.moveSlidesToHeight(ppb.STACK_CONE_2);
+        ppb.driveToCoordinate(ppb.RED_FRONT_CONE_STACK_COL, ppb.RED_FRONT_CONE_STACK_ROW);
+        ppb.closeClaw();
+        // Drive to High Junction (5,2)
+        ppb.driveToCoordinate(4, 2);
+        ppb.moveSlidesToHeight(ppb.JUNCTION_HIGH);
+        ppb.driveToCoordinate(5, 2);
+        ppb.openClaw();
+        // Get Stack Cone #1
+        ppb.driveToCoordinate(4, 2);
+        ppb.moveSlidesToHeight(ppb.STACK_CONE_1);
+        ppb.driveToCoordinate(ppb.RED_FRONT_CONE_STACK_COL, ppb.RED_FRONT_CONE_STACK_ROW);
+        ppb.closeClaw();
+        // Drive to Medium Junction (2,2)
+        ppb.driveToCoordinate(4, 2);
+        ppb.moveSlidesToHeight(ppb.JUNCTION_HIGH);
+        ppb.driveToCoordinate(3, 2);
+        ppb.openClaw();
+        // Park for end of Autonomous
+        ppb.driveToCoordinate(2, 2);
+        ppb.moveSlidesToHeight(ppb.JUNCTION_GROUND);
 
+        telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
+        telemetry.addData("Current Position", "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
         telemetry.addData("Red Right Path", "Complete");
         telemetry.update();
-        sleep(5000);  // Pause to display last telemetry message.
+        sleep(1000);  // Pause to display last telemetry message.
     }
 }

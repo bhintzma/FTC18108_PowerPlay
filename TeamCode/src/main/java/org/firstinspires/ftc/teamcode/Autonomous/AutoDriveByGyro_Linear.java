@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -84,7 +85,7 @@ import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.TURN_SPEED
  */
 
 @Autonomous(name="Robot: Auto Drive By Gyro", group="Robot")
-// @Disabled
+@Disabled
 public class AutoDriveByGyro_Linear extends LinearOpMode {
 
     @Override

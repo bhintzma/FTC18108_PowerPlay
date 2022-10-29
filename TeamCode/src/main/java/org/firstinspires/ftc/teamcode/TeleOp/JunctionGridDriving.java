@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+    import com.qualcomm.robotcore.eventloop.opmode.Disabled;
     import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
     import com.qualcomm.robotcore.util.Range;
     import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -51,7 +52,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
      */
 
     @TeleOp(name="JunctionGridDriving")
-    // @Disabled
+    @Disabled
     public class JunctionGridDriving extends LinearOpMode {
 
         // Define constants for TETRIX Drivetrain
@@ -98,7 +99,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
             }
 
             // Set initial Bot Coordinates on the field
-            ppb.gamepadSetCurrentBotCoordinates();
+            // ppb.gamepadSetCurrentBotCoordinates();
 
             // Wait for the game to start (driver presses PLAY) Display IMU value while waiting
             while (opModeInInit()) {
@@ -113,6 +114,10 @@ package org.firstinspires.ftc.teamcode.TeleOp;
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
 
+                /************************************************************************************
+                 * GAMEPAD1: DRIVETRAIN
+                 ************************************************************************************/
+
                 // If buttonGrid driving, decide if the bot has driven far enough to stop, ignore all gamepad buttons
                 if (buttonGridDriving) {
                     if (buttonGridDrivingForward) {
@@ -120,24 +125,12 @@ package org.firstinspires.ftc.teamcode.TeleOp;
                             buttonGridDriving = false;
                             buttonGridDrivingForward = false;
                             ppb.stop();
-                            /*
-                            ppb.frontLeft.setPower(0.0);
-                            ppb.frontRight.setPower(0.0);
-                            ppb.backLeft.setPower(0.0);
-                            ppb.backRight.setPower(0.0);
-                             */
                         }
                     } else {
                         if (ppb.frontLeft.getCurrentPosition() <= ppb.stopMotorCounts) {
                             buttonGridDriving = false;
                             buttonGridDrivingForward = false;
                             ppb.stop();
-                            /*
-                            ppb.frontLeft.setPower(0.0);
-                            ppb.frontRight.setPower(0.0);
-                            ppb.backLeft.setPower(0.0);
-                            ppb.backRight.setPower(0.0);
-                             */
                         }
                     }
                 } else {
@@ -225,37 +218,29 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
                 // If not buttonGrid driving, check if joystickGrid driving
                 if (!buttonGridDriving) {
+                    ppb.mecanumDriving();
+                }
 
-                    // POV Mode uses left stick to go forward, and right stick to turn.
-                    // - This uses basic math to combine motions and is easier to drive straight.
-                    ppb.drive1 = -gamepad1.left_stick_y;
-                    ppb.drive2 = -gamepad1.left_stick_x;
-                    // turn1 = -gamepad1.right_stick_x;
-                    // turn2 = -gamepad1.right_stick_y;
+                /************************************************************************************
+                 * GAMEPAD2: LINEAR SLIDES + CLAW
+                 ************************************************************************************/
 
-                    // If left joystick is deflected at all, do mecanum strafe driving
-                    if ((ppb.drive1 != 0.0) || (ppb.drive2 != 0.0)){
-                        ppb.leftPower = Range.clip(ppb.drive1 + ppb.drive2, -1.0, 1.0);
-                        ppb.rightPower = Range.clip(ppb.drive1 - ppb.drive2, -1.0, 1.0);
+                // Use GamePad2 Right Joystick to raise and lower the Linear Slides
+                double slidePower = Range.clip(gamepad2.right_stick_y, -1.0, 1.0);
+                ppb.slideLeft.setPower(-1 * slidePower);
+                ppb.slideRight.setPower(slidePower);
 
-                        // Send calculated power to wheels
-                        ppb.frontLeft.setPower(ppb.rightPower);
-                        ppb.frontRight.setPower(ppb.leftPower);
-                        ppb.backLeft.setPower(ppb.leftPower);
-                        ppb.backRight.setPower(ppb.rightPower);
-                    } else {
-                        // Only if left joystick is not deflected, check right joystick for rotation driving
-                        // drive1 = -gamepad1.right_stick_y;
-                        ppb.drive2 = -gamepad1.right_stick_x;
-                        ppb.leftPower = Range.clip(ppb.drive1 + ppb.drive2, -1.0, 1.0);
-                        ppb.rightPower = Range.clip(ppb.drive1 - ppb.drive2, -1.0, 1.0);
-
-                        // Send calculated power to wheels
-                        ppb.frontLeft.setPower(ppb.rightPower);
-                        ppb.frontRight.setPower(ppb.leftPower);
-                        ppb.backLeft.setPower(ppb.rightPower);
-                        ppb.backRight.setPower(ppb.leftPower);
-
+                // Use GamePad2 Left & Right Bumpers to open and close the Claw
+                if (gamepad2.left_bumper) {
+                    ppb.Aposition -= ppb.INCREMENT;
+                    if (ppb.Aposition >= ppb.AMAX_POS) {
+                        ppb.Aposition = ppb.AMAX_POS;
+                    }
+                }
+                if (gamepad2.right_bumper) {
+                    ppb.Aposition += ppb.INCREMENT;
+                    if (ppb.Aposition <= ppb.AMIN_POS) {
+                        ppb.Aposition = ppb.AMIN_POS;
                     }
                 }
 
