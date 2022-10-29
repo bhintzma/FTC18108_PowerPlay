@@ -120,8 +120,8 @@ public class PowerPlayBot extends MecanumDrive {
     // They can/should be tweaked to suit the specific robot drive train.
     // static final double     DRIVE_SPEED             = 0.4;     // Max driving speed for better distance accuracy.
     // static final double     TURN_SPEED              = 0.2;     // Max Turn speed to limit turn rate
-    public static final double     DRIVE_SPEED             = 0.8;     // Max driving speed for better distance accuracy.
-    public static final double     TURN_SPEED              = 0.5;     // Max Turn speed to limit turn rate
+    public static final double     DRIVE_SPEED             = 0.25;     // Max driving speed for better distance accuracy.
+    public static final double     TURN_SPEED              = 0.05;     // Max Turn speed to limit turn rate
     public static final double     HEADING_THRESHOLD       = 1.0 ;    // How close must the heading get to the target before moving to next step.
                                                                // Requiring more accuracy (a smaller number) will often make the turn take longer to get into the final position.
     // Define the Proportional control coefficient (or GAIN) for "heading control".
@@ -310,8 +310,8 @@ public class PowerPlayBot extends MecanumDrive {
     public void moveSlides() {
         double slidePower = Range.clip(opMode.gamepad2.right_stick_y, -1.0, 1.0);
 
-        slideLeft.setPower(-1 * slidePower);
-        slideRight.setPower(slidePower);
+        slideLeft.setPower(-0.5 * slidePower);
+        slideRight.setPower(0.5 * slidePower);
     }
 
     public void moveSlidesToHeight(int motorSlideEncoderCounts) {
@@ -335,14 +335,14 @@ public class PowerPlayBot extends MecanumDrive {
 
     public void clawPosition() {
 
-        if (opMode.gamepad2.left_bumper) {
+        if (opMode.gamepad2.right_bumper) {
             Aposition -= INCREMENT;
             if (Aposition >= AMAX_POS) {
                 Aposition = AMAX_POS;
             }
         }
 
-        if (opMode.gamepad2.right_bumper) {
+        if (opMode.gamepad2.left_bumper) {
             Aposition += INCREMENT;
             if (Aposition <= AMIN_POS) {
                 Aposition = AMIN_POS;
@@ -749,19 +749,19 @@ public class PowerPlayBot extends MecanumDrive {
         double v3;
         double v4;
 
-        if (opMode.gamepad1.b) {
-            v1 = Range.clip(-drive + strafe + turn, -0.2, 0.2);
-            v2 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
-            v3 = Range.clip(-drive + strafe - turn, -0.2, 0.2);
-            v4 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
+        if (opMode.gamepad1.right_bumper) {
+            v1 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
+            v2 = Range.clip(-drive + strafe - turn, -0.2, 0.2);
+            v3 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
+            v4 = Range.clip(-drive + strafe + turn, -0.2, 0.2);
 
         }
 
         else {
-            v1 = Range.clip(-drive + strafe + turn, -0.8, 0.8);
-            v2 = Range.clip(-drive - strafe - turn, -0.8, 0.8);
-            v3 = Range.clip(-drive + strafe - turn, -0.8, 0.8);
-            v4 = Range.clip(-drive - strafe + turn, -0.8, 0.8);
+            v1 = Range.clip(-drive - strafe + turn, -0.8, 0.8);
+            v2 = Range.clip(-drive + strafe - turn, -0.8, 0.8);
+            v3 = Range.clip(-drive - strafe - turn, -0.8, 0.8);
+            v4 = Range.clip(-drive + strafe + turn, -0.8, 0.8);
         }
 
         frontLeft.setPower(v1);
@@ -769,6 +769,37 @@ public class PowerPlayBot extends MecanumDrive {
         backLeft.setPower(v3);
         backRight.setPower(v4);
     }
+
+
+    /*public void autoMecanumDriving(distance) {
+        double drive = opMode.gamepad1.left_stick_y;
+        double strafe = opMode.gamepad1.right_stick_x;
+        double turn = opMode.gamepad1.left_stick_x;
+        double v1;
+        double v2;
+        double v3;
+        double v4;
+
+        if (opMode.gamepad1.right_bumper) {
+            v1 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
+            v2 = Range.clip(-drive + strafe - turn, -0.2, 0.2);
+            v3 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
+            v4 = Range.clip(-drive + strafe + turn, -0.2, 0.2);
+
+        }
+
+        else {
+            v1 = Range.clip(-drive - strafe + turn, -0.8, 0.8);
+            v2 = Range.clip(-drive + strafe - turn, -0.8, 0.8);
+            v3 = Range.clip(-drive - strafe - turn, -0.8, 0.8);
+            v4 = Range.clip(-drive + strafe + turn, -0.8, 0.8);
+        }
+
+        frontLeft.setPower(v1);
+        frontRight.setPower(v2);
+        backLeft.setPower(v3);
+        backRight.setPower(v4);
+    }*/
 
     public void strafeRight(double maxDriveSpeed,
                            double distance) {

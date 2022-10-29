@@ -81,8 +81,16 @@ public class LM0_Test extends LinearOpMode {
         */
 
         // Move from starting position against the wall to the center of the current tile
-        ppb.driveStraight(DRIVE_SPEED, 4.0, 0.0);    // Drive Forward 4"
-        ppb.holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
+        ppb.holdHeading(TURN_SPEED, 0.0, 0.25);
+        ppb.driveStraight(DRIVE_SPEED, 7.5, 0.0);    // Drive Forward 4"
+        ppb.driveStraight(DRIVE_SPEED, 48, 0.0);
+        ppb.holdHeading(TURN_SPEED, 0.0, 0.25); // Hold 0 Deg heading for a 0.25 second
+        ppb.closeClaw();
+        ppb.holdHeading(TURN_SPEED, 0.0, 0.5); // Hold 0 Deg heading for a 0.25 second
+        ppb.moveSlidesToHeight(1000);
+        ppb.holdHeading(TURN_SPEED, 0.0, 0.25); // Hold 0 Deg heading for a 0.25 second
+        ppb.openClaw();
+
 
         /*
 
@@ -100,7 +108,7 @@ public class LM0_Test extends LinearOpMode {
         ppb.moveSlidesToHeight(ppb.JUNCTION_HIGH);
         ppb.driveToCoordinate(5, 6);
         ppb.openClaw();
-        // Get Stack Cone #4
+        // Get Stack Cone #45
         ppb.driveToCoordinate(4, 6);
         ppb.moveSlidesToHeight(ppb.STACK_CONE_4);
         ppb.driveToCoordinate(ppb.RED_FRONT_CONE_STACK_COL, ppb.RED_FRONT_CONE_STACK_ROW);
