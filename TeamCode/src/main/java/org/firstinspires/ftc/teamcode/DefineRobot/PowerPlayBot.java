@@ -310,8 +310,8 @@ public class PowerPlayBot extends MecanumDrive {
     public void moveSlides() {
         double slidePower = Range.clip(opMode.gamepad2.right_stick_y, -1.0, 1.0);
 
-        slideLeft.setPower(-0.5 * slidePower);
-        slideRight.setPower(0.5 * slidePower);
+        slideLeft.setPower(-0.7 * slidePower);
+        slideRight.setPower(0.7 * slidePower);
     }
 
     public void moveSlidesToHeight(int motorSlideEncoderCounts) {
@@ -758,10 +758,10 @@ public class PowerPlayBot extends MecanumDrive {
         }
 
         else {
-            v1 = Range.clip(-drive - strafe + turn, -0.8, 0.8);
-            v2 = Range.clip(-drive + strafe - turn, -0.8, 0.8);
-            v3 = Range.clip(-drive - strafe - turn, -0.8, 0.8);
-            v4 = Range.clip(-drive + strafe + turn, -0.8, 0.8);
+            v1 = Range.clip(-drive - strafe + turn, -0.7, 0.7);
+            v2 = Range.clip(-drive + strafe - turn, -0.7, 0.7);
+            v3 = Range.clip(-drive - strafe - turn, -0.7, 0.7);
+            v4 = Range.clip(-drive + strafe + turn, -0.7, 0.7);
         }
 
         frontLeft.setPower(v1);
