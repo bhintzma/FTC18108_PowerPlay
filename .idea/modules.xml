@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FTC18108_PowerPlay.iml" filepath="$PROJECT_DIR$/.idea/modules/FTC18108_PowerPlay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.main.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcRobotController/FTC18108_PowerPlay.FtcRobotController.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode/FTC18108_PowerPlay.TeamCode.unitTest.iml" />
+    </modules>
+  </component>
+</project>

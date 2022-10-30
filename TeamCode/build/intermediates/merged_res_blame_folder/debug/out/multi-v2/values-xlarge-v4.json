@@ -4,7 +4,7 @@
             "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-31:/values-xlarge-v4/values-xlarge-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\risha\\.gradle\\caches\\transforms-3\\3967bb3b222e781a3ce9a576c35793dc\\transformed\\appcompat-1.5.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "source": "/Users/sandhya/.gradle/caches/transforms-3/3967bb3b222e781a3ce9a576c35793dc/transformed/appcompat-1.5.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",

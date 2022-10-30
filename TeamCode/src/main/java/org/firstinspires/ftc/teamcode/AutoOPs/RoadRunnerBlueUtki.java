@@ -101,10 +101,8 @@ public class RoadRunnerBlueUtki extends LinearOpMode {
 
         waitForStart();
         {
-
-
-            ppb.followTrajectory(firstt);
-
+            ppb.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+            sleep(2000);
         }
     }
 }

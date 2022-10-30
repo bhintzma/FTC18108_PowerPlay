@@ -34,8 +34,12 @@ import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.TURN_SPEED
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  Autonomous code for competition - PowerPlay season
@@ -59,8 +63,15 @@ public class LM0_Red_Right extends LinearOpMode {
             e.printStackTrace();
         }
 
-        // Set initial Bot Coordinates on the field
-        ppb.currentBotCol = ppb.RED_RIGHT_START_COL;
+        ppb.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+        List<Double> allWheelPos = new ArrayList<>();
+
+        waitForStart();
+        // PLAY just pressed on Driver Station, reset Heading and game timer
+
+            // Set initial Bot Coordinates on the field
+        /* ppb.currentBotCol = ppb.RED_RIGHT_START_COL;
         ppb.currentBotRow = ppb.RED_RIGHT_START_ROW;
         ppb.currentHeading = 0.0;
         ppb.currentAlliance = PowerPlayBot.Alliance.RED;
@@ -73,16 +84,26 @@ public class LM0_Red_Right extends LinearOpMode {
             telemetry.update();
         }
 
-        // PLAY just pressed on Driver Station, reset Heading and game timer
+         */
+
         ppb.runtime.reset();
 
         /*
          Autonomous code goes here
         */
 
+        ppb.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+        allWheelPos = ppb.getWheelPositions();
+        while (!isStopRequested() && (allWheelPos.get(0) > -2.0)) {
+            telemetry.addData("lF Encoder: ", allWheelPos.get(0));
+            telemetry.update();
+            allWheelPos = ppb.getWheelPositions();
+        }
+        ppb.stop();
+
         // Move from starting position against the wall to the center of the current tile
-        ppb.driveStraight(DRIVE_SPEED, 4.0, 0.0);    // Drive Forward 4"
-        ppb.holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
+        //ppb.driveStraight(DRIVE_SPEED, 4.0, 0.0);    // Drive Forward 4"
+        //ppb.holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
     /*
 
         // Vision Detect for the Sleeve goes here
@@ -142,11 +163,13 @@ public class LM0_Red_Right extends LinearOpMode {
         // Park for end of Autonomous
         ppb.driveToCoordinate(2, 2);
         ppb.moveSlidesToHeight(ppb.JUNCTION_GROUND);
-*/
-        telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
-        telemetry.addData("Current Position", "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
-        telemetry.addData("Red Right Path", "Complete");
-        telemetry.update();
-        sleep(1000);  // Pause to display last telemetry message.
+        */
+            /* telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
+            telemetry.addData("Current Position", "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
+            telemetry.addData("Red Right Path", "Complete");
+            telemetry.update();
+            sleep(1000);  // Pause to display last telemetry message.
+
+             */
     }
 }

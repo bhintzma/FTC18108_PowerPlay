@@ -4,7 +4,7 @@
             "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-31:/values-v11/values-v11.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\risha\\.gradle\\caches\\transforms-3\\a32b0872d1ed6e6286187f12e1d00b8d\\transformed\\jetified-RobotCore-8.0.0\\res\\values-v11\\values-v11.xml",
+                    "source": "/Users/sandhya/.gradle/caches/transforms-3/a32b0872d1ed6e6286187f12e1d00b8d/transformed/jetified-RobotCore-8.0.0/res/values-v11/values-v11.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
