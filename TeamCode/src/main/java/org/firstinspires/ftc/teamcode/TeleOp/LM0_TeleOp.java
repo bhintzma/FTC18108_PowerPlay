@@ -46,6 +46,7 @@ public class LM0_TeleOp extends LinearOpMode {
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("servoPosition", ppb.Aposition);
             telemetry.update();
         }
     }

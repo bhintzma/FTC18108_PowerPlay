@@ -182,8 +182,8 @@ public class PowerPlayBot extends MecanumDrive {
     public static final double INCREMENT   = 0.05;     // amount to slew servo each CYCLE_MS cycle
     public static final int    CYCLE_MS    =   30;     // period of each cycle
 
-    public static final double AMAX_POS     =  1.4;     // Maximum rotational position ---- Phil Claw: 1.7; GoBilda Claw: 1.4
-    public static final double AMIN_POS     =  0.61;     // Minimum rotational position ---- Phil Claw: 0.49; GoBilda Claw: 0.61
+    public static final double AMAX_POS = 1.4;     // Maximum rotational position ---- Phil Claw: 1.4; GoBilda Claw: 1.4
+    public static final double AMIN_POS = 0.7;     // Minimum rotational position ---- Phil Claw: 0.7; GoBilda Claw: 0.61
     public double  Aposition = AMIN_POS;                 // Start position
 
     public static final double BMAX_POS     =  1.00;     // Maximum rotational position
@@ -335,7 +335,7 @@ public class PowerPlayBot extends MecanumDrive {
 
     public void clawPosition() {
 
-        if (opMode.gamepad2.right_bumper) {
+        /*if (opMode.gamepad2.right_bumper) {
             Aposition -= INCREMENT;
             if (Aposition >= AMAX_POS) {
                 Aposition = AMAX_POS;
@@ -347,10 +347,19 @@ public class PowerPlayBot extends MecanumDrive {
             if (Aposition <= AMIN_POS) {
                 Aposition = AMIN_POS;
             }
+        }*/
+
+        if (opMode.gamepad2.left_bumper) {
+            Claw.setPosition(AMIN_POS);
+        }
+        if (opMode.gamepad2.right_bumper) {
+            Claw.setPosition(AMAX_POS);
         }
 
         // Set the servo to the new position and pause;
-        Claw.setPosition(Aposition);
+
+        //Claw.setPosition(Aposition);
+
         //opMode.sleep(CYCLE_MS);
         //opMode.idle();
 
