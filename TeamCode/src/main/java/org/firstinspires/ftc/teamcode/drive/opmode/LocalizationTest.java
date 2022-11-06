@@ -23,7 +23,7 @@ import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.CYCLE_MS;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "drive")
-@Disabled
+//@Disabled
 public class LocalizationTest extends LinearOpMode {
 
     @Override
@@ -43,7 +43,7 @@ public class LocalizationTest extends LinearOpMode {
         waitForStart();
 
         while (!isStopRequested()) {
-            /* ppb.setWeightedDrivePower(
+            ppb.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
                             -gamepad1.right_stick_x,
@@ -51,9 +51,7 @@ public class LocalizationTest extends LinearOpMode {
                     )
             );
 
-             */
-
-            ppb.mecanumDriving();
+            //ppb.mecanumDriving();
             ppb.clawPosition();
             ppb.moveSlides();
 
