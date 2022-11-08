@@ -21,11 +21,16 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous.AprilTagVision;
 
+import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.DRIVE_SPEED;
+import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.TURN_SPEED;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -33,10 +38,14 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
 
 @Autonomous
 public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
 {
+
+
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -64,6 +73,24 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
     @Override
     public void runOpMode()
     {
+
+        PowerPlayBot ppb = new PowerPlayBot(this, hardwareMap);
+
+        // Initialize the drive system variables
+        try {
+            ppb.init();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        ppb.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+        // Set initial Bot Coordinates on the field
+        ppb.currentBotCol = ppb.RED_RIGHT_START_COL;
+        ppb.currentBotRow = ppb.RED_RIGHT_START_ROW;
+        ppb.currentHeading = 0.0;
+        ppb.currentAlliance = PowerPlayBot.Alliance.RED;
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -170,16 +197,12 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
         /* Actually do something useful */
         if(tagOfInterest == null)
         {
-            /*
-             * Insert your autonomous code here, presumably running some default configuration
-             * since the tag was never sighted during INIT
-             */
+            //ppb.setMotorPowers(1.0, 1.0, 1.0, 1.0);
+            //ppb.stop();
         }
         else if(tagOfInterest.id == LEFT)
         {
-            /*
-             * Insert your autonomous code here, probably using the tag pose to decide your configuration.
-             */
+
         }
         else if(tagOfInterest.id == MIDDLE)
         {
