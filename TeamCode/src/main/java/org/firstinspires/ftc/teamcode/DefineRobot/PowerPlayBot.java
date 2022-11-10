@@ -40,6 +40,8 @@ import org.firstinspires.ftc.teamcode.drive.opmode.BackAndForth;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
+import org.firstinspires.ftc.teamcode.util.AxisDirection;
+import org.firstinspires.ftc.teamcode.util.BNO055IMUUtil;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 
 import java.util.ArrayList;
@@ -106,14 +108,14 @@ public class PowerPlayBot extends MecanumDrive {
     public int stopMotorCounts = 0;
 
     // ADDED: For the TETRIX Drivetrain
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;
+    static final double     COUNTS_PER_MOTOR_REV    = 550 ;
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
-    static final double     WHEEL_DIAMETER_INCHES   = 2.953 ;   // For figuring circumference
+    static final double     WHEEL_DIAMETER_INCHES   = 1.890 ;   // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     STRAFE_COUNTS_PER_INCH  = 166.667;
-    public static final int        COUNTS_PER_1_TILE_STANDARD  = 3500;
-    public static final int        COUNTS_PER_1_TILE_STRAFE    = 4000;
+    static final double     STRAFE_COUNTS_PER_INCH  = 48.94;
+    public static final int        COUNTS_PER_1_TILE_STANDARD  = 1100;
+    public static final int        COUNTS_PER_1_TILE_STRAFE    = 1100;
 
 
     // These constants define the desired driving/control characteristics
@@ -406,6 +408,8 @@ public class PowerPlayBot extends MecanumDrive {
         parameters.angleUnit            = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
 
+        BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
+
         try {
             // initCalibData();
             initGridValues();
@@ -486,6 +490,8 @@ public class PowerPlayBot extends MecanumDrive {
         // Initialize values for IMU
         parameters.angleUnit            = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
+
+        BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
 
         try {
             // initCalibData();
@@ -711,7 +717,7 @@ public class PowerPlayBot extends MecanumDrive {
         if (opMode.opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            int moveCounts = (int)(distance * STRAFE_COUNTS_PER_INCH);
+            int moveCounts = (int) (distance * STRAFE_COUNTS_PER_INCH);
             frontLeftTarget = frontLeft.getCurrentPosition() + moveCounts;
             frontRightTarget = frontRight.getCurrentPosition() + moveCounts;
             backLeftTarget = backLeft.getCurrentPosition() + moveCounts;
@@ -1177,6 +1183,27 @@ public class PowerPlayBot extends MecanumDrive {
         frontRight.setPower(rightSpeed);
         backLeft.setPower(leftSpeed);
         backRight.setPower(rightSpeed);
+    }
+
+    public void moveRobotRevision(double drive, double turn) {
+        driveSpeed = drive;     // save this value as a class member so it can be used by telemetry.
+        turnSpeed  = turn;      // save this value as a class member so it can be used by telemetry.
+
+        leftSpeed  = drive - turn;
+        rightSpeed = drive + turn;
+
+        // Scale speeds down if either one exceeds +/- 1.0;
+        double max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+        if (max > 1.0)
+        {
+            leftSpeed /= max;
+            rightSpeed /= max;
+        }
+
+        frontLeft.setPower(drive);
+        frontRight.setPower(drive);
+        backLeft.setPower(drive);
+        backRight.setPower(drive);
     }
 
     /**

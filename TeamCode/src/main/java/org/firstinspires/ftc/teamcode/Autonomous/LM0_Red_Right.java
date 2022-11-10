@@ -65,8 +65,6 @@ public class LM0_Red_Right extends LinearOpMode {
 
         ppb.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        //test
-
         List<Double> allWheelPos = new ArrayList<>();
 
         waitForStart();

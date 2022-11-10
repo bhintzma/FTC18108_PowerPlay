@@ -34,6 +34,7 @@ import static org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot.TURN_SPEED
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot;
 
@@ -59,6 +60,8 @@ public class LM0_Test extends LinearOpMode {
             e.printStackTrace();
         }
 
+        ppb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         // Set initial Bot Coordinates on the field
         ppb.currentBotCol = ppb.RED_RIGHT_START_COL;
         ppb.currentBotRow = ppb.RED_RIGHT_START_ROW;
@@ -70,6 +73,7 @@ public class LM0_Test extends LinearOpMode {
             telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
             telemetry.addData("Robot Heading ", "= %4.0f", ppb.getRawHeading());
             telemetry.addData("Start Position",  "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
+            telemetry.addData("Encoder Pos", ppb.frontLeft.getCurrentPosition());
             telemetry.update();
         }
 
@@ -80,18 +84,33 @@ public class LM0_Test extends LinearOpMode {
          Autonomous code goes here
         */
 
+        while (!isStopRequested()) {
+
+            while (ppb.frontLeft.getCurrentPosition() <= 180) {
+                ppb.setMotorPowers(0.3, -0.3, -0.3, 0.3);
+            }
+
+            telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
+            telemetry.addData("Current Position", "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
+            telemetry.addData("Red Right Path", "Complete");
+            telemetry.addData("Encoder Pos", ppb.frontLeft.getCurrentPosition());
+            telemetry.update();
+            sleep(1000);  // Pause to display last telemetry message.
+        }
+
+        //ppb.driveStraight(0.5, 4, 0);
+
         // Move from starting position against the wall to the center of the current tile
-        ppb.holdHeading(TURN_SPEED, 0.0, 0.25);
-        ppb.driveStraight(DRIVE_SPEED, 7.5, 0.0);    // Drive Forward 4"
-        ppb.driveStraight(DRIVE_SPEED, 48, 0.0);
+        //ppb.holdHeading(TURN_SPEED, 0.0, 0.25);
+        //ppb.driveStraight(DRIVE_SPEED, 7.5, 0.0);    // Drive Forward 4"
+        /*  ppb.driveStraight(DRIVE_SPEED, 48, 0.0);
         ppb.holdHeading(TURN_SPEED, 0.0, 0.25); // Hold 0 Deg heading for a 0.25 second
         ppb.closeClaw();
         ppb.holdHeading(TURN_SPEED, 0.0, 0.5); // Hold 0 Deg heading for a 0.25 second
         ppb.moveSlidesToHeight(1000);
         ppb.holdHeading(TURN_SPEED, 0.0, 0.25); // Hold 0 Deg heading for a 0.25 second
         ppb.openClaw();
-
-        //test
+         */
 
 
         /*
@@ -158,6 +177,7 @@ public class LM0_Test extends LinearOpMode {
         telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
         telemetry.addData("Current Position", "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
         telemetry.addData("Red Right Path", "Complete");
+        telemetry.addData("Encoder Pos", ppb.frontLeft.getCurrentPosition());
         telemetry.update();
         sleep(1000);  // Pause to display last telemetry message.
     }
