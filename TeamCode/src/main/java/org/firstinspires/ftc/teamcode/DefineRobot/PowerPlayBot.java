@@ -337,6 +337,7 @@ public class PowerPlayBot extends MecanumDrive {
     }
 
     public void moveSlidesToHeight(int motorSlideEncoderCounts) {
+        opMode.sleep(500);
 
         slideLeft.setTargetPosition(-motorSlideEncoderCounts);
         slideRight.setTargetPosition(motorSlideEncoderCounts);
@@ -346,6 +347,18 @@ public class PowerPlayBot extends MecanumDrive {
 
         slideLeft.setPower(-0.5);
         slideRight.setPower(0.5);
+
+        while (slideRight.getCurrentPosition() <= motorSlideEncoderCounts) {
+            opMode.telemetry.addData("Slide Pos: ", slideRight.getCurrentPosition());
+            opMode.telemetry.update();
+        }
+
+        slideLeft.setPower(0.0);
+        slideRight.setPower(0.0);
+
+        slideLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        slideRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
     public void openClaw() {
@@ -737,6 +750,11 @@ public class PowerPlayBot extends MecanumDrive {
         // Ensure that the opmode is still active
         if (opMode.opModeIsActive()) {
 
+            frontLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+            frontRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+            backLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+            backRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
             // Determine new target position, and pass to motor controller
             int moveCounts = (int) (distance * STRAFE_COUNTS_PER_INCH);
             frontLeftTarget = frontLeft.getCurrentPosition() + moveCounts;
@@ -760,7 +778,6 @@ public class PowerPlayBot extends MecanumDrive {
 
             maxDriveSpeed = Math.abs(maxDriveSpeed);
             moveRobot(maxDriveSpeed, 0);
-
 
             // keep looping while we are still active, and ALL motors are running.
             while (opMode.opModeIsActive() &&
@@ -853,9 +870,9 @@ public class PowerPlayBot extends MecanumDrive {
         if (opMode.opModeIsActive()) {
 
             startMotorCounts = frontLeft.getCurrentPosition();
-            stopMotorCounts = startMotorCounts + (int)(distance * STRAFE_COUNTS_PER_INCH);
-            drive1 = 0.0;
-            drive2 = -1.0;
+            stopMotorCounts = startMotorCounts + (int) (distance * STRAFE_COUNTS_PER_INCH);
+            drive1 = 0;
+            drive2 = -maxDriveSpeed;
             leftPower = Range.clip(drive1 + drive2, -1.0, 1.0);
             rightPower = Range.clip(drive1 - drive2, -1.0, 1.0);
             // Send calculated power to wheels
@@ -880,7 +897,7 @@ public class PowerPlayBot extends MecanumDrive {
             startMotorCounts = frontLeft.getCurrentPosition();
             stopMotorCounts = startMotorCounts - (int)(distance * STRAFE_COUNTS_PER_INCH);
             drive1 = 0.0;
-            drive2 = 1.0;
+            drive2 = maxDriveSpeed;
             leftPower = Range.clip(drive1 + drive2, -1.0, 1.0);
             rightPower = Range.clip(drive1 - drive2, -1.0, 1.0);
             // Send calculated power to wheels
@@ -1113,14 +1130,16 @@ public class PowerPlayBot extends MecanumDrive {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         resetAngle();
 
         currentAngle = getAngle();
         startAngle = currentAngle;
+
+        opMode.sleep(250);
 
         if (angle <= 0) {
             // Start Right turn
@@ -1132,11 +1151,11 @@ public class PowerPlayBot extends MecanumDrive {
             while (true) {
                 currentAngle = getAngle();
 
-                if (currentAngle <= 0.4 * angle) {
-                    frontLeft.setPower(0.4 * power);
-                    frontRight.setPower(-0.4 * power);
-                    backLeft.setPower(0.4 * power);
-                    backRight.setPower(-0.4 * power);
+                if (currentAngle <= 0.5 * angle) {
+                    frontLeft.setPower(0.9 * power);
+                    frontRight.setPower(-0.9 * power);
+                    backLeft.setPower(0.9 * power);
+                    backRight.setPower(-0.9 * power);
                 }
 
                 // Stop turning when the turned angle = requested angle
@@ -1165,11 +1184,11 @@ public class PowerPlayBot extends MecanumDrive {
             while (true) {
                 currentAngle = getAngle();
 
-                if (currentAngle >= 0.4 * angle) {
-                    frontLeft.setPower(-0.4 * power);
-                    frontRight.setPower(0.4 * power);
-                    backLeft.setPower(-0.4 * power);
-                    backRight.setPower(0.4 * power);
+                if (currentAngle >= 0.5 * angle) {
+                    frontLeft.setPower(-0.9 * power);
+                    frontRight.setPower(0.9 * power);
+                    backLeft.setPower(-0.9 * power);
+                    backRight.setPower(0.9 * power);
                 }
 
                 // Stop turning when the turned angle = requested angle
@@ -1191,32 +1210,34 @@ public class PowerPlayBot extends MecanumDrive {
         }
     }
 
-    public void driveStraightGyro(int degreesToDrive, double drivePower) {
+    public void driveStraightGyro(double inchesToDrive, double drivePower) {
 
         double power = drivePower;
-        int motorDistance = degreesToDrive;
+        double motorDistance = (double) (inchesToDrive * STRAFE_COUNTS_PER_INCH);
         double correction = 0.02;
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetAngle();
 
+        opMode.sleep(250);
+
         if (motorDistance >= 0) {
             // Start driving forward
-            frontLeft.setPower(power);
-            frontRight.setPower(power);
-            backLeft.setPower(power);
-            backRight.setPower(power);
+            frontLeft.setPower(0.25);
+            frontRight.setPower(0.25);
+            backLeft.setPower(0.25);
+            backRight.setPower(0.25);
 
             while (true) {
                 // telemetry.addData("frontLeft",  "Distance: %3d", frontLeft.getCurrentPosition());
@@ -1232,13 +1253,13 @@ public class PowerPlayBot extends MecanumDrive {
                 opMode.telemetry.addData("Gyro Angle", "(%.2f)", angles.firstAngle);
                 opMode.telemetry.addData("Encoders:", "M0: %3d  M1:%3d  M2:%3d  M3:%3d",
                         frontLeft.getCurrentPosition(),
-                        frontRight.getCurrentPosition(),
-                        backLeft.getCurrentPosition(),
+                        -frontRight.getCurrentPosition(),
+                        -backLeft.getCurrentPosition(),
                         backRight.getCurrentPosition());
                 opMode.telemetry.update();
 
                 // Stop driving when Motor Encoder Avg. >= motorDistance
-                if ((frontLeft.getCurrentPosition() + frontRight.getCurrentPosition() + backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4 >= motorDistance) {
+                if ((frontLeft.getCurrentPosition() - frontRight.getCurrentPosition() - backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4 >= motorDistance) {
                     frontLeft.setPower(0.0);
                     frontRight.setPower(0.0);
                     backLeft.setPower(0.0);
@@ -1274,7 +1295,7 @@ public class PowerPlayBot extends MecanumDrive {
                 opMode.telemetry.update();
 
                 // Stop driving when Motor Encoder Avg. <= motorDistance
-                if ((frontLeft.getCurrentPosition() + frontRight.getCurrentPosition() + backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4 <= motorDistance) {
+                if ((frontLeft.getCurrentPosition() - frontRight.getCurrentPosition() - backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4 <= motorDistance) {
                     frontLeft.setPower(0.0);
                     frontRight.setPower(0.0);
                     backLeft.setPower(0.0);
@@ -1421,6 +1442,12 @@ public class PowerPlayBot extends MecanumDrive {
      * @param turn  clockwise turning motor speed.
      */
     public void moveRobot(double drive, double turn) {
+
+        frontLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
         driveSpeed = drive;     // save this value as a class member so it can be used by telemetry.
         turnSpeed  = turn;      // save this value as a class member so it can be used by telemetry.
 
