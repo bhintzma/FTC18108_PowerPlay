@@ -116,7 +116,8 @@ public class PowerPlayBot extends MecanumDrive {
     static final double     WHEEL_DIAMETER_INCHES   = 1.890 ;   // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     STRAFE_COUNTS_PER_INCH  = 48.94;
+    static final double     STRAFE_COUNTS_PER_INCH  = 51.39;
+    static final double     WHEEL_COUNTS_PER_INCH   = 43.50;
     public static final int        COUNTS_PER_1_TILE_STANDARD  = 1100;
     public static final int        COUNTS_PER_1_TILE_STRAFE    = 1100;
 
@@ -348,9 +349,17 @@ public class PowerPlayBot extends MecanumDrive {
         slideLeft.setPower(-0.5);
         slideRight.setPower(0.5);
 
-        while (slideRight.getCurrentPosition() <= motorSlideEncoderCounts) {
-            opMode.telemetry.addData("Slide Pos: ", slideRight.getCurrentPosition());
-            opMode.telemetry.update();
+        if (slideRight.getCurrentPosition() < motorSlideEncoderCounts) {
+            while (slideRight.getCurrentPosition() <= motorSlideEncoderCounts) {
+                opMode.telemetry.addData("Slide Pos: ", slideRight.getCurrentPosition());
+                opMode.telemetry.update();
+            }
+        }
+        else {
+            while (slideRight.getCurrentPosition() >= motorSlideEncoderCounts) {
+                opMode.telemetry.addData("Slide Pos: ", slideRight.getCurrentPosition());
+                opMode.telemetry.update();
+            }
         }
 
         slideLeft.setPower(0.0);
@@ -549,6 +558,16 @@ public class PowerPlayBot extends MecanumDrive {
             if (backRight != null) {
                 backRight.setDirection(DcMotorEx.Direction.FORWARD);
                 backRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            }
+            if (slideLeft != null) {
+                slideLeft.setDirection(DcMotorEx.Direction.FORWARD);
+                slideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                slideLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            }
+            if (slideRight != null) {
+                slideRight.setDirection(DcMotorEx.Direction.FORWARD);
+                slideRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                slideRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             }
             stop();
         }
@@ -756,7 +775,7 @@ public class PowerPlayBot extends MecanumDrive {
             backRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
             // Determine new target position, and pass to motor controller
-            int moveCounts = (int) (distance * STRAFE_COUNTS_PER_INCH);
+            int moveCounts = (int) (distance * WHEEL_COUNTS_PER_INCH);
             frontLeftTarget = frontLeft.getCurrentPosition() + moveCounts;
             frontRightTarget = frontRight.getCurrentPosition() + moveCounts;
             backLeftTarget = backLeft.getCurrentPosition() + moveCounts;
@@ -910,6 +929,99 @@ public class PowerPlayBot extends MecanumDrive {
             while (frontLeft.getCurrentPosition() >= stopMotorCounts) {
             }
             stop();
+        }
+    }
+
+    public void strafeLeftIMU(double distance,
+                           double maxDriveSpeed) {
+
+        double correction;
+
+        // Ensure that the opmode is still active
+        if (opMode.opModeIsActive()) {
+            opMode.sleep(500);
+
+            startMotorCounts = frontLeft.getCurrentPosition();
+            stopMotorCounts = startMotorCounts - (int) (distance * STRAFE_COUNTS_PER_INCH);
+            drive1 = 0.0;
+            drive2 = maxDriveSpeed;
+            leftPower = Range.clip(drive1 + drive2, -1.0, 1.0);
+            rightPower = Range.clip(drive1 - drive2, -1.0, 1.0);
+            // Send calculated power to wheels
+            frontLeft.setPower(rightPower);
+            frontRight.setPower(leftPower);
+            backLeft.setPower(leftPower);
+            backRight.setPower(rightPower);
+
+            while (true) {
+
+                correction = checkDirection();
+                frontLeft.setPower(rightPower - correction);
+                frontRight.setPower(leftPower + correction);
+                backLeft.setPower(leftPower - correction);
+                backRight.setPower(rightPower + correction);
+
+                Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                opMode.telemetry.addData("Gyro Angle", "(%.2f)", angles.firstAngle);
+                opMode.telemetry.addData("Encoders:", "M0: %3d  M1:%3d  M2:%3d  M3:%3d",
+                        frontLeft.getCurrentPosition(),
+                        -frontRight.getCurrentPosition(),
+                        -backLeft.getCurrentPosition(),
+                        backRight.getCurrentPosition());
+                opMode.telemetry.update();
+
+                // Stop when the bot has driven the requested distance
+                 if (frontLeft.getCurrentPosition() <= stopMotorCounts) {
+                    stop();
+                    break;
+                }
+            }
+        }
+    }
+
+    public void strafeRightIMU(double distance, double maxDriveSpeed) {
+        double correction;
+
+        // Ensure that the opmode is still active
+        if (opMode.opModeIsActive()) {
+
+            opMode.sleep(500);
+
+            startMotorCounts = frontLeft.getCurrentPosition();
+            stopMotorCounts = startMotorCounts + (int) (distance * STRAFE_COUNTS_PER_INCH);
+            drive1 = 0.0;
+            drive2 = -maxDriveSpeed;
+            leftPower = Range.clip(drive1 + drive2, -1.0, 1.0);
+            rightPower = Range.clip(drive1 - drive2, -1.0, 1.0);
+            // Send calculated power to wheels
+            frontLeft.setPower(rightPower);
+            frontRight.setPower(leftPower);
+            backLeft.setPower(leftPower);
+            backRight.setPower(rightPower);
+
+            while (true) {
+
+                correction = checkDirection();
+                frontLeft.setPower(rightPower - correction);
+                frontRight.setPower(leftPower + correction);
+                backLeft.setPower(leftPower - correction);
+                backRight.setPower(rightPower + correction);
+
+                Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                opMode.telemetry.addData("Gyro Angle", "(%.2f)", angles.firstAngle);
+                opMode.telemetry.addData("Encoders:", "M0: %3d  M1:%3d  M2:%3d  M3:%3d",
+                        frontLeft.getCurrentPosition(),
+                        -frontRight.getCurrentPosition(),
+                        -backLeft.getCurrentPosition(),
+                        backRight.getCurrentPosition());
+                opMode.telemetry.update();
+
+                // Stop when the bot has driven the requested distance
+                if (frontLeft.getCurrentPosition() >= stopMotorCounts) {
+                    stop();
+                    break;
+                }
+            }
         }
     }
 
@@ -1213,7 +1325,7 @@ public class PowerPlayBot extends MecanumDrive {
     public void driveStraightGyro(double inchesToDrive, double drivePower) {
 
         double power = drivePower;
-        double motorDistance = (double) (inchesToDrive * STRAFE_COUNTS_PER_INCH);
+        double motorDistance = (double) (inchesToDrive * WHEEL_COUNTS_PER_INCH);
         double correction = 0.02;
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -1259,7 +1371,7 @@ public class PowerPlayBot extends MecanumDrive {
                 opMode.telemetry.update();
 
                 // Stop driving when Motor Encoder Avg. >= motorDistance
-                if ((frontLeft.getCurrentPosition() - frontRight.getCurrentPosition() - backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4 >= motorDistance) {
+                if ((frontLeft.getCurrentPosition() - frontRight.getCurrentPosition() - backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4.0 >= motorDistance) {
                     frontLeft.setPower(0.0);
                     frontRight.setPower(0.0);
                     backLeft.setPower(0.0);
@@ -1295,7 +1407,7 @@ public class PowerPlayBot extends MecanumDrive {
                 opMode.telemetry.update();
 
                 // Stop driving when Motor Encoder Avg. <= motorDistance
-                if ((frontLeft.getCurrentPosition() - frontRight.getCurrentPosition() - backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4 <= motorDistance) {
+                if ((frontLeft.getCurrentPosition() - frontRight.getCurrentPosition() - backLeft.getCurrentPosition() + backRight.getCurrentPosition()) / 4.0 <= motorDistance) {
                     frontLeft.setPower(0.0);
                     frontRight.setPower(0.0);
                     backLeft.setPower(0.0);
