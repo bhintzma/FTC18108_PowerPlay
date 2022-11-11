@@ -76,7 +76,7 @@ public class PowerPlayBot extends MecanumDrive {
     public DcMotorEx backRight   = null;
     public DcMotorEx slideRight  = null;
     public DcMotorEx slideLeft   = null;
-    public Servo Claw        = null;
+    public Servo Claw            = null;
     // public Servo rightClaw       = null;
     public BNO055IMU imu         = null;  // Control Hub IMU
     Orientation lastAngles = new Orientation();
@@ -188,7 +188,7 @@ public class PowerPlayBot extends MecanumDrive {
     public static final int    CYCLE_MS    =   30;     // period of each cycle
 
     public static final double AMAX_POS = 1.4;     // Maximum rotational position ---- Phil Claw: 1.4; GoBilda Claw: 1.4
-    public static final double AMIN_POS = 0.7;     // Minimum rotational position ---- Phil Claw: 0.7; GoBilda Claw: 0.61
+    public static final double AMIN_POS = 0.61;     // Minimum rotational position ---- Phil Claw: 0.7; GoBilda Claw: 0.61
     public double  Aposition = AMIN_POS;                 // Start position
 
     public static final double BMAX_POS     =  1.00;     // Maximum rotational position
@@ -338,8 +338,8 @@ public class PowerPlayBot extends MecanumDrive {
 
     public void moveSlidesToHeight(int motorSlideEncoderCounts) {
 
-        slideLeft.setTargetPosition(motorSlideEncoderCounts);
-        slideRight.setTargetPosition(-motorSlideEncoderCounts);
+        slideLeft.setTargetPosition(-motorSlideEncoderCounts);
+        slideRight.setTargetPosition(motorSlideEncoderCounts);
 
         slideLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         slideRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -350,12 +350,10 @@ public class PowerPlayBot extends MecanumDrive {
 
     public void openClaw() {
         Claw.setPosition(CLAW_OPEN_SETTING);
-        opMode.sleep(1000);
     }
 
     public void closeClaw() {
         Claw.setPosition(CLAW_CLOSED_SETTING);
-        opMode.sleep(1000);
     }
 
     public void clawPosition() {
@@ -799,17 +797,17 @@ public class PowerPlayBot extends MecanumDrive {
         double v1, v2, v3, v4;
 
         if (opMode.gamepad1.right_bumper) {
-            v1 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
-            v2 = Range.clip(-drive + strafe + turn, -0.2, 0.2);
-            v3 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
-            v4 = Range.clip(-drive + strafe - turn, -0.2, 0.2);
+            v1 = Range.clip(-drive + strafe + turn, -0.2, 0.2);
+            v2 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
+            v3 = Range.clip(-drive + strafe - turn, -0.2, 0.2);
+            v4 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
         }
 
         else {
-            v1 = Range.clip(-drive - strafe - turn, -0.7, 0.7);
-            v2 = Range.clip(-drive + strafe + turn, -0.7, 0.7);
-            v3 = Range.clip(-drive - strafe + turn, -0.7, 0.7);
-            v4 = Range.clip(-drive + strafe - turn, -0.7, 0.7);
+            v1 = Range.clip(-drive + strafe + turn, -0.7, 0.7);
+            v2 = Range.clip(-drive - strafe - turn, -0.7, 0.7);
+            v3 = Range.clip(-drive + strafe - turn, -0.7, 0.7);
+            v4 = Range.clip(-drive - strafe + turn, -0.7, 0.7);
         }
         frontLeft.setPower(v1);
         frontRight.setPower(v2);
