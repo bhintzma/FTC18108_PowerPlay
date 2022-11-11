@@ -43,7 +43,7 @@ import org.firstinspires.ftc.teamcode.DefineRobot.PowerPlayBot;
  */
 
 @Autonomous(name="Red_Right", group="Robot")
-@Disabled
+//@Disabled
 public class Red_Right extends LinearOpMode {
 
     @Override
@@ -81,6 +81,9 @@ public class Red_Right extends LinearOpMode {
          Autonomous code goes here
         */
 
+        ppb.driveStraightGyro(2000, 0.3);
+
+        /*
         // Move from starting position against the wall to the center of the current tile
         ppb.driveStraight(DRIVE_SPEED, 4.0, 0.0);    // Drive Forward 4"
         ppb.holdHeading(TURN_SPEED, 0.0, 0.25);      // Hold 0 Deg heading for a 0.25 second
@@ -142,6 +145,7 @@ public class Red_Right extends LinearOpMode {
         // Park for end of Autonomous
         ppb.driveToCoordinate(2, 2);
         ppb.moveSlidesToHeight(ppb.JUNCTION_GROUND);
+         */
 
         telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
         telemetry.addData("Current Position", "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);

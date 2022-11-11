@@ -84,16 +84,21 @@ public class LM0_Test extends LinearOpMode {
          Autonomous code goes here
         */
 
-        while (!isStopRequested()) {
+        while (opModeIsActive()) {
 
-            while (ppb.frontLeft.getCurrentPosition() <= 180) {
-                ppb.setMotorPowers(0.3, -0.3, -0.3, 0.3);
-            }
+            /* ppb.frontLeft.setTargetPosition(2500);
+
+            ppb.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+             */
+
+            ppb.driveStraight(0.3, 14, 0.0);
 
             telemetry.addData("Current Alliance", "%s", ppb.currentAlliance);
             telemetry.addData("Current Position", "X: %2d Y: %2d", ppb.currentBotCol, ppb.currentBotRow);
             telemetry.addData("Red Right Path", "Complete");
             telemetry.addData("Encoder Pos", ppb.frontLeft.getCurrentPosition());
+            telemetry.addData("IMU Pos: ", ppb.imu.getPosition());
             telemetry.update();
             sleep(1000);  // Pause to display last telemetry message.
         }
