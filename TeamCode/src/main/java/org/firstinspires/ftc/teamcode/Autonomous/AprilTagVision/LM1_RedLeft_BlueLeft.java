@@ -47,7 +47,7 @@ import java.util.ArrayList;
 /* Test for LM1 - Nov 10 2022 */
 
 @Autonomous
-public class LM1_RedRight_BlueLeft extends LinearOpMode
+public class LM1_RedLeft_BlueLeft extends LinearOpMode
 {
 
     OpenCvCamera camera;
