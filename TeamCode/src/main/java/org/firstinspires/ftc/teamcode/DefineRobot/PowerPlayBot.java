@@ -325,6 +325,7 @@ public class PowerPlayBot extends MecanumDrive {
 
     public void moveSlides() {
         double slidePower = Range.clip(opMode.gamepad2.right_stick_y, -1.0, 1.0);
+
         if (slidePower > 0)
             slidePower /= 2;
 
@@ -338,6 +339,8 @@ public class PowerPlayBot extends MecanumDrive {
     }
 
     public void moveSlidesToHeight(int motorSlideEncoderCounts) {
+        double currentTime = runtime.time();
+
         opMode.sleep(500);
 
         slideLeft.setTargetPosition(-motorSlideEncoderCounts);
@@ -346,11 +349,11 @@ public class PowerPlayBot extends MecanumDrive {
         slideLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         slideRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-        slideLeft.setPower(-0.5);
-        slideRight.setPower(0.5);
+        slideLeft.setPower(-0.75);
+        slideRight.setPower(0.75);
 
         if (slideRight.getCurrentPosition() < motorSlideEncoderCounts) {
-            while (slideRight.getCurrentPosition() <= motorSlideEncoderCounts) {
+            while ((slideRight.getCurrentPosition() <= motorSlideEncoderCounts) && (runtime.time() <= currentTime + 6.0)) {
                 opMode.telemetry.addData("Slide Pos: ", slideRight.getCurrentPosition());
                 opMode.telemetry.update();
             }
@@ -468,12 +471,12 @@ public class PowerPlayBot extends MecanumDrive {
             }
             if (slideLeft != null) {
                 slideLeft.setDirection(DcMotorEx.Direction.FORWARD);
-                slideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                slideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
                 slideLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             }
             if (slideRight != null) {
                 slideRight.setDirection(DcMotorEx.Direction.FORWARD);
-                slideRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                slideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
                 slideRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             }
             stop();
@@ -561,12 +564,12 @@ public class PowerPlayBot extends MecanumDrive {
             }
             if (slideLeft != null) {
                 slideLeft.setDirection(DcMotorEx.Direction.FORWARD);
-                slideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                slideLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
                 slideLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             }
             if (slideRight != null) {
                 slideRight.setDirection(DcMotorEx.Direction.FORWARD);
-                slideRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                slideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
                 slideRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             }
             stop();
