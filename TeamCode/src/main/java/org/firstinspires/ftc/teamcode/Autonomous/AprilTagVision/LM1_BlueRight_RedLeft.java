@@ -267,8 +267,9 @@ public class LM1_BlueRight_RedLeft extends LinearOpMode
             ppb.moveSlidesToHeight(100);
             if(tagOfInterest.id == LEFT)
                 {
-                    sleep(1000);
-                } //Stay in that square
+                    ppb.driveStraightGyro(48, 1);
+                    sleep(100);
+                } //Move to square three
 
             else if(tagOfInterest.id == MIDDLE)
                 {
@@ -278,9 +279,8 @@ public class LM1_BlueRight_RedLeft extends LinearOpMode
 
             else if(tagOfInterest.id == RIGHT)
                 {
-                    ppb.driveStraightGyro(48, 1);
-                    sleep(100);
-                } //Move to square three
+                    sleep(1000);
+                } //Stay in that square
             }
     }
 
