@@ -76,7 +76,9 @@ public class PowerPlayBot extends MecanumDrive {
     public DcMotorEx backRight   = null;
     public DcMotorEx slideRight  = null;
     public DcMotorEx slideLeft   = null;
+    public DcMotorEx turret      = null;
     public Servo Claw            = null;
+    public Servo HorizontalSlides = null;
     // public Servo rightClaw       = null;
     public BNO055IMU imu         = null;  // Control Hub IMU
     Orientation lastAngles = new Orientation();
@@ -185,7 +187,7 @@ public class PowerPlayBot extends MecanumDrive {
 
 
     // Constants define movement of claw; Min and Max Positions
-    public static final double INCREMENT   = 0.05;     // amount to slew servo each CYCLE_MS cycle
+    public static final double INCREMENT   = 0.03;     // amount to slew servo each CYCLE_MS cycle
     public static final int    CYCLE_MS    =   30;     // period of each cycle
 
     public static final double AMAX_POS = 1.4;     // Maximum rotational position ---- Phil Claw: 1.4; GoBilda Claw: 1.4
@@ -323,6 +325,12 @@ public class PowerPlayBot extends MecanumDrive {
         backRight.setPower(v3);
     }
 
+    public void moveTurret() {
+        double turretPower = Range.clip(opMode.gamepad2.left_stick_x, -1.0, 1.0);
+
+        turret.setPower(0.8  * turretPower);
+    }
+
     public void moveSlides() {
         double slidePower = Range.clip(opMode.gamepad2.right_stick_y, -1.0, 1.0);
 
@@ -337,6 +345,15 @@ public class PowerPlayBot extends MecanumDrive {
              slideLeft.setPower(0.0);
          }
     }
+
+    /* public void moveHorizontalSlides() {
+        if (opMode.gamepad2.left_stick_x > 0)
+            HorizontalSlides.setPosition(HorizontalSlides.getPosition() + INCREMENT);
+        else if (opMode.gamepad2.left_stick_x < 0)
+            HorizontalSlides.setPosition(HorizontalSlides.getPosition() - INCREMENT);
+    }
+
+     */
 
     public void moveSlidesToHeight(int motorSlideEncoderCounts) {
         double currentTime = runtime.time();
@@ -436,7 +453,9 @@ public class PowerPlayBot extends MecanumDrive {
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         slideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
         slideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
+        turret = hardwareMap.get(DcMotorEx.class, "turret");
         Claw = hardwareMap.get(Servo.class, "Claw");
+        HorizontalSlides = hardwareMap.get(Servo.class, "HorizontalSlides");
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
@@ -478,6 +497,11 @@ public class PowerPlayBot extends MecanumDrive {
                 slideRight.setDirection(DcMotorEx.Direction.FORWARD);
                 slideRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
                 slideRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            }
+            if (turret != null) {
+                turret.setDirection(DcMotorEx.Direction.FORWARD);
+                turret.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+                turret.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             }
             stop();
         } catch (Exception ex) {
@@ -529,6 +553,8 @@ public class PowerPlayBot extends MecanumDrive {
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         slideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
         slideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
+        HorizontalSlides = hardwareMap.get(Servo.class, "HorizontalSlides");
+        turret = hardwareMap.get(DcMotorEx.class, "turret");
         Claw = hardwareMap.get(Servo.class, "Claw");
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         imu = hardwareMap.get(BNO055IMU.class, "imu");

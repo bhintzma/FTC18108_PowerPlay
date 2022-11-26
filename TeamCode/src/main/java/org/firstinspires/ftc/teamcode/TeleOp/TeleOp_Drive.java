@@ -48,6 +48,7 @@ public class TeleOp_Drive extends LinearOpMode {
                 ppb.moveSlidesToHeight(4000);
 
             ppb.moveSlides();
+            ppb.moveTurret();
 
             ppb.update();
 
